@@ -4,17 +4,17 @@ import { userController } from "../controllers/UserController.js";
 const userRoutes = Router();
 
 // GET ALL USERS
-//userRoutes.get("/users",userController.users);
+userRoutes.get("/users",userController.getAllUsers);
 
 // GET USER
-//userRoutes.get("/user",userController.user)
+userRoutes.get("/user/:id",userController.getUserById)
 
 // CREATE USER
 userRoutes.post("/usercreate",userController.userCreate);
 
 // UPDATE USER
-//serRoutes.put("/userupdate",userController.userUpdate);
+userRoutes.put("/userupdate/:id",userController.updateUser);
 
-//userRoutes.post("/userdelete",userController.userDelete)
+userRoutes.post("/userdelete/:id",userController.userDelete)
 
 export default userRoutes;
