@@ -60,6 +60,7 @@ async function userCreate(req, res) {
         name: name.trim(),
         email: email.toLowerCase().trim(),
         password: password_hash,
+        profileImage: null,
       },
     });
 
@@ -272,11 +273,52 @@ async function userDelete(req, res) {
   }
 }
 
-// Exporta todas as funções do controlador
+/**
+ * Atualiza a imagem de perfil do usuário
+ * Recebe o arquivo de imagem via upload
+ * Verifica existência do usuário
+ * Atualiza o caminho da imagem no banco de dados
+ */
+async function setImgProfile(req, res) {
+  try {
+    
+    console.log(req.file.filename);
+    console.log(req.file.path);
+    const { filename, path } = req.file;
+    const { id } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: {
+        profileImage: path,
+      },
+    });
+
+    // Remove password from response
+    const { password: _, ...userWithoutPassword } = updatedUser;
+    return res.status(200).json(userWithoutPassword);
+  } catch (error) {
+    console.error("Erro ao atualizar imagem de perfil:", error);
+    return res.status(500).json({
+      error: "Erro interno do servidor ao atualizar imagem de perfil",
+    });
+  }
+}
+
+// Don't forget to add it to the exports
 export const userController = {
   userCreate,
   getUserById,
   getAllUsers,
   updateUser,
   userDelete,
+  setImgProfile, // Add this line
 };

@@ -1,20 +1,27 @@
 import { Router } from "express";
 import { userController } from "../controllers/UserController.js";
+import multer from "multer";
+import multerConfig from "../config/multer.js";
 
+const upload = multer(multerConfig);
 const userRoutes = Router();
 
 // GET ALL USERS
-userRoutes.get("/users",userController.getAllUsers);
+userRoutes.get("/users", userController.getAllUsers);
 
 // GET USER
-userRoutes.get("/user/:id",userController.getUserById)
+userRoutes.get("/user/:id", userController.getUserById);
 
 // CREATE USER
-userRoutes.post("/usercreate",userController.userCreate);
+userRoutes.post("/usercreate", userController.userCreate);
 
 // UPDATE USER
-userRoutes.put("/userupdate/:id",userController.updateUser);
+userRoutes.put("/userupdate/:id", userController.updateUser);
 
-userRoutes.post("/userdelete/:id",userController.userDelete)
+// SET PROFILE IMAGE
+userRoutes.put("/userimage/:id", upload.single('file'), userController.setImgProfile);
+
+// DELETE USER
+userRoutes.delete("/user/:id", userController.userDelete);
 
 export default userRoutes;
