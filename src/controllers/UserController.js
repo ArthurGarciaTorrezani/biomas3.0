@@ -298,7 +298,7 @@ async function setImgProfile(req, res) {
     const updatedUser = await prisma.user.update({
       where: { id },
       data: {
-        profileImage: path,
+        profileImage: filename,
       },
     });
 
