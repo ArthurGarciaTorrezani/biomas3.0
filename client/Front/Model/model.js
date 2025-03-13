@@ -2,20 +2,31 @@
 async function loadPosts() {
   try {
     // Comentar a chamada real da API
-    const response = await fetch("http://localhost:8080/posts");
-    const posts = await response.json();
-
+    const response = await fetch("http://localhost:8080/posts")
+    const posts = await response.json()
+    console.log(posts)
     // Usar dados de teste
     //const posts = testData;
-    const postsContainer = document.getElementById("posts-container");
-    postsContainer.innerHTML = ""; // Limpa o container
+    const postsContainer = document.getElementById("posts-container")
+    postsContainer.innerHTML = "" // Limpa o container
 
     posts.forEach((post) => {
-      postsContainer.innerHTML += createPostHTML(post);
-    });
+      postsContainer.innerHTML += createPostHTML(post)
+    })
   } catch (error) {
-    console.error("Erro ao carregar posts:", error);
+    console.error("Erro ao carregar posts:", error)
+
+    const postsContainer = document.getElementById("posts-container")
+    postsContainer.innerHTML = "" // Limpa o container
+
+    testData.forEach((post) => {
+      postsContainer.innerHTML += createPostHTML(post)
+    })
   }
+}
+
+function updateSession(){
+
 }
 
 // Função para criar HTML do post
@@ -41,18 +52,16 @@ function createPostHTML(post) {
             
             <div class="add-comment">
                 <textarea placeholder="Adicione um comentário..."></textarea>
-                <button onclick="addComment('${
-                  post.id
-                }', null)">Comentar</button>
+                <button onclick="addComment('${post.id}', null)">Comentar</button>
             </div>
         </div>
-    `;
+    `
 }
 
 // Função para criar HTML dos comentários
 function createCommentsHTML(comments) {
   // Filtra comentários principais (sem parentCommentId)
-  const mainComments = comments.filter((comment) => !comment.parentCommentId);
+  const mainComments = comments.filter((comment) => !comment.parentCommentId)
 
   return mainComments
     .map(
@@ -61,27 +70,23 @@ function createCommentsHTML(comments) {
             <div class="comment-header">
                 <div class="comment-info">
                     <h6 class="comment-author">${comment.author.name}</h6>
-                    <span class="comment-date">${formatDate(
-                      comment.createdAt
-                    )}</span>
+                    <span class="comment-date">${formatDate(comment.createdAt)}</span>
                 </div>
             </div>
             <div class="comment-content">
                 <p>${comment.content}</p>
             </div>
-            <div class="add-comment">
-                <textarea placeholder="Adicione um comentário..."></textarea>
-                <button onclick="addComment('${comment.postId}', '${
-        comment.id
-      }')">Comentar</button>
-            </div>
             <div class="comment-replies">
                 ${createRepliesHTML(comment.replies || [])}
             </div>
+            <div class="add-comment">
+                <textarea placeholder="Responder a este comentário..."></textarea>
+                <button onclick="addComment('${comment.postId}', '${comment.id}')">Responder</button>
+            </div>
         </div>
-    `
+    `,
     )
-    .join("");
+    .join("")
 }
 
 // Função para criar HTML das respostas
@@ -93,34 +98,30 @@ function createRepliesHTML(replies) {
             <div class="comment-header">
                 <div class="comment-info">
                     <h6 class="comment-author">${reply.author.name}</h6>
-                    <span class="comment-date">${formatDate(
-                      reply.createdAt
-                    )}</span>
+                    <span class="comment-date">${formatDate(reply.createdAt)}</span>
                 </div>
             </div>
             <div class="comment-content">
                 <p>${reply.content}</p>
             </div>
             <div class="add-comment">
-                <textarea placeholder="Adicione um comentário..."></textarea>
-                <button onclick="addComment('${reply.postId}', '${
-        reply.id
-      }')">Comentar</button>
+                <textarea placeholder="Responder a este comentário..."></textarea>
+                <button onclick="addComment('${reply.postId}', '${reply.id}')">Responder</button>
             </div>
         </div>
-    `
+    `,
     )
-    .join("");
+    .join("")
 }
 
 // Funções de interação
 async function addComment(postId, parentId = null) {
   const container = parentId
-    ? document.querySelector(`[data-comment-id="${parentId}"] .reply-form`)
-    : document.querySelector(`[data-post-id="${postId}"] .add-comment`);
+    ? document.querySelector(`[data-comment-id="${parentId}"] .add-comment`)
+    : document.querySelector(`[data-post-id="${postId}"] .add-comment`)
 
-  const content = container.querySelector("textarea").value.trim();
-  if (!content) return;
+  const content = container.querySelector("textarea").value.trim()
+  if (!content) return
 
   try {
     const response = await fetch("/api/comments", {
@@ -133,14 +134,18 @@ async function addComment(postId, parentId = null) {
         postId,
         parentCommentId: parentId,
       }),
-    });
+    })
 
     if (response.ok) {
-      loadPosts(); // Recarrega todos os posts
-      container.querySelector("textarea").value = "";
+      loadPosts() // Recarrega todos os posts
+      container.querySelector("textarea").value = ""
     }
   } catch (error) {
-    console.error("Erro ao adicionar comentário:", error);
+    console.error("Erro ao adicionar comentário:", error)
+    // Simular adição de comentário para demonstração
+    alert("Comentário adicionado com sucesso (simulação)")
+    container.querySelector("textarea").value = ""
+    loadPosts()
   }
 }
 
@@ -150,9 +155,9 @@ function formatDate(dateString) {
     day: "numeric",
     month: "long",
     year: "numeric",
-  });
+  })
 }
 
 // Inicialização
-document.addEventListener("DOMContentLoaded", loadPosts);
+document.addEventListener("DOMContentLoaded", loadPosts)
 

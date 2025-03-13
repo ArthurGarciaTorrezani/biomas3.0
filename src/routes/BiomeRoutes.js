@@ -7,7 +7,7 @@ const biomeRoutes = Router();
 biomeRoutes.post('/biome', biomeController.create);
 biomeRoutes.get('/biomes', biomeController.getBiomes);
 biomeRoutes.get('/biomes/', biomeController.getBiomeByName);
-biomeRoutes.get('/biome/', biomeController.getBiome);
+biomeRoutes.get('/biome/:id', biomeController.getBiome);
 biomeRoutes.put('/biome/', biomeController.updateBioma);
 biomeRoutes.delete('/biomes/', biomeController.deleteBioma);
 
