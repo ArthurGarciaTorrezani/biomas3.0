@@ -16,12 +16,14 @@ userRoutes.get("/user/:id", userController.getUserById);
 userRoutes.post("/usercreate", userController.userCreate);
 
 // UPDATE USER
-userRoutes.put("/userupdate/:id", userController.updateUser);
+userRoutes.put("/userupdate/", userController.updateUser);
 
 // SET PROFILE IMAGE
-userRoutes.put("/userimage/:id", upload.single('file'), userController.setImgProfile);
+userRoutes.put("/userimage/", upload.single('file'), userController.setImgProfile);
 
 // DELETE USER
-userRoutes.delete("/user/:id", userController.userDelete);
+userRoutes.delete("/user/", userController.userDelete);
+
+
 
 export default userRoutes;

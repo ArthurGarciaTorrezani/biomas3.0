@@ -5,7 +5,7 @@ const postRoutes = Router();
 
 // Public routes
 postRoutes.get("/posts", postController.getAllPosts);
-postRoutes.get("/post/:id", postController.getPostById);
+postRoutes.get("/post", postController.getPostById);
 
 // Protected routes - require authentication
 postRoutes.post("/postcreate/", postController.createPost);

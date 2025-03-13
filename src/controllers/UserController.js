@@ -9,6 +9,7 @@ const prisma = new PrismaClient();
  * Verifica existência de usuário
  * Criptografa a senha antes de salvar
  */
+
 async function userCreate(req, res) {
   try {
     const { adm, name, email, password } = req.body;
@@ -281,9 +282,6 @@ async function userDelete(req, res) {
  */
 async function setImgProfile(req, res) {
   try {
-    
-    console.log(req.file.filename);
-    console.log(req.file.path);
     const { filename, path } = req.file;
     const { id } = req.params;
 

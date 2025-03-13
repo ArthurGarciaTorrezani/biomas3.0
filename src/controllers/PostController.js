@@ -57,7 +57,7 @@ async function getAllPosts(req, res) {
  */
 async function getPostById(req, res) {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
 
     const post = await prisma.post.findUnique({
       where: { id },
@@ -146,6 +146,7 @@ async function createPost(req, res) {
         biome: true
       }
     });
+
 
     return res.status(201).json(post);
   } catch (error) {

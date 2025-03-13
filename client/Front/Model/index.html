@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazônia</title>
+    <link rel="stylesheet" href="../reset.css">
+    <link rel="stylesheet" href="model.css">
+    <link rel="shortcut icon" type="image/png" href="../img/logo-pag.ico">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="../Main/index.html" id="img-nav">
+                    <img src="../img/logo-eco2.png" alt="logo-ecosphere" width=60 height=40>
+                </a>
+                <div id="greeting">
+                    <p></p>
+                </div>
+
+                <div id="Bioms-nav">
+                    <a href="../Main/index.html">Início</a>
+                    <a href="../Caatinga/biomaCaatinga.html">Caatinga</a>
+                    <a href="../Cerrado/biomaCerrado.html">Cerrado</a></li>
+                    <a href="../Mata Atlantica/biomaMatlantica.html">Mata Atlântica</a>
+                    <a href="../Pantanal/biomaPantanal.html">Pantanal</a>
+                    <a href="../Pampa/biomaPampa.html">Pampa</a>
+                    <a href="../Sobrenos/sobre.html">Sobre nós</a>
+                </div>
+
+            </div>
+
+            <button id="menu-btn"><img src="../img/nav-show.png" alt=""></button>
+            <ul id="dropdown-menu" class="hidden">
+                <li><a href="../Login/login.html">Login</a></li>
+                <li><a href="../Perfil/perfil.html">Perfil</a></li>
+                <li><a href="../Login/login.html">Sair</a></li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main>
+        <div class="carrossel-container">
+            <button class="carrossel-btn prev">&lt;</button>
+            <div class="carrossel">
+                <img src="../img/amazonia1.jpg" alt="Floresta Amazônica">
+                <img src="../img/amazonia2.jpg" alt="Rio na Amazônia">
+                <img src="../img/amazonia3.jpg" alt="Fauna da Amazônia">
+            </div>
+            <button class="carrossel-btn next">&gt;</button>
+        </div>
+
+        <!-- Seção de Informações do Bioma -->
+        <section class="biome-info">
+            <h1 class="biome-title">Amazônia</h1>
+            <div class="info-grid">
+                <div class="info-card description">
+                    <div class="card-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h2>Descrição</h2>
+                    <p>A Amazônia é o maior bioma do Brasil e a maior floresta tropical do mundo. Abriga a maior biodiversidade do planeta e possui uma importância fundamental para o equilíbrio climático global. É conhecida como o "pulmão do mundo" devido à sua capacidade de produção de oxigênio e absorção de dióxido de carbono.</p>
+                </div>
+
+                <div class="info-card location">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h2>Localização</h2>
+                    <p>Ocupa cerca de 49% do território brasileiro, estendendo-se pelos estados do Acre, Amapá, Amazonas, Pará, Roraima, Rondônia, Mato Grosso, Maranhão e Tocantins. Além do Brasil, a floresta amazônica também está presente na Bolívia, Colômbia, Equador, Guiana, Guiana Francesa, Peru, Suriname e Venezuela.</p>
+                </div>
+
+                <div class="info-card climate">
+                    <div class="card-icon">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                    </div>
+                    <h2>Clima</h2>
+                    <p>Predominantemente equatorial quente e úmido, com temperaturas médias entre 24°C e 26°C durante todo o ano. A umidade relativa do ar é alta, geralmente acima de 80%, e a precipitação anual varia entre 1.500 mm e 3.000 mm, dependendo da região. As chuvas são bem distribuídas ao longo do ano, com um período mais chuvoso de dezembro a maio.</p>
+                </div>
+
+                <div class="info-card fauna">
+                    <div class="card-icon">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <h2>Fauna</h2>
+                    <p>A Amazônia abriga uma diversidade extraordinária de animais, com mais de 2.000 espécies de peixes, 430 de mamíferos, 1.300 de aves, 400 de anfíbios e 380 de répteis. Entre os animais mais emblemáticos estão o boto-cor-de-rosa, onça-pintada, arara-azul, uacari-branco, peixe-boi, harpia, tucano, jacaré-açu e diversas espécies de macacos como o macaco-prego e o uakari.</p>
+                </div>
+
+                <div class="info-card flora">
+                    <div class="card-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h2>Flora</h2>
+                    <p>A vegetação amazônica é extremamente rica, estimada em mais de 40.000 espécies de plantas. As árvores formam diferentes estratos, podendo alcançar até 65 metros de altura. Espécies notáveis incluem a seringueira, castanheira-do-pará, açaizeiro, pau-rosa, mogno, cedro, vitória-régia, andiroba, copaíba e uma enorme variedade de orquídeas, bromélias, samambaias e plantas medicinais.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Posts e Comentários -->
+        <section class="posts-section">
+            <h2>Discussões sobre a Amazônia</h2>
+            <div id="posts-container">
+                <!-- Posts serão inseridos aqui dinamicamente -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Biomas do Brasil</p>
+        <p>Arthur Garcia, Lucas Magalhães, Miguel Rayan, Pedro Augusto, Rafi Gabriel, Tomaz Corrêa</p>
+    </footer>
+    <script src="../scripts.js"></script>
+    <script src="model.js"></script>
+</body>
+
+</html>
