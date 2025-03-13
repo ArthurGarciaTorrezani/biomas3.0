@@ -84,7 +84,21 @@ async function getBiome(req, res) {
       where: { id },
       include: {
         images: true,
-        posts: true,
+        posts: {
+          include: {
+            comments: {
+              include: {
+                author: true,
+                replies: {
+                  include: {
+                    author: true
+                  }
+                }
+              }
+            },
+            author: true
+          }
+        }
       },
     });
 

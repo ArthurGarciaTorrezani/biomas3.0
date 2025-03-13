@@ -2,15 +2,23 @@
 async function loadPosts() {
   try {
     // Comentar a chamada real da API
-    const response = await fetch("http://localhost:8080/posts")
-    const posts = await response.json()
-    console.log(posts)
+    //const response = await fetch("http://localhost:8080/posts")
+    const biomeId = "c9a0a26f-32dd-43e4-8d13-e3c4d6cf2ecb"; // ID do bioma Amazônia
+    const response = await fetch(`http://localhost:8080/biome/${biomeId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    
+    const biome = await response.json()
+ 
     // Usar dados de teste
-    //const posts = testData;
+   
     const postsContainer = document.getElementById("posts-container")
     postsContainer.innerHTML = "" // Limpa o container
 
-    posts.forEach((post) => {
+    biome.posts.forEach((post) => {
       postsContainer.innerHTML += createPostHTML(post)
     })
   } catch (error) {
@@ -19,9 +27,7 @@ async function loadPosts() {
     const postsContainer = document.getElementById("posts-container")
     postsContainer.innerHTML = "" // Limpa o container
 
-    testData.forEach((post) => {
-      postsContainer.innerHTML += createPostHTML(post)
-    })
+
   }
 }
 
