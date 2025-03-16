@@ -57,7 +57,7 @@ async function getAllPosts(req, res) {
  */
 async function getPostById(req, res) {
   try {
-    const { id } = req.body;
+    const { id } = req.params;  // Changed from req.body to req.params
 
     const post = await prisma.post.findUnique({
       where: { id },

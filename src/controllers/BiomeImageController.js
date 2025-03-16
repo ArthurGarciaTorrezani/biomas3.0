@@ -40,7 +40,7 @@ async function listImages(req, res) {
 
 async function getImage(req, res) {
   try {
-    const { id } = req.body;
+    const { id } = req.params;  // Changed from req.body to req.params
 
     if (!id) {
       return res.status(400).json({ error: "ID é obrigatório" });

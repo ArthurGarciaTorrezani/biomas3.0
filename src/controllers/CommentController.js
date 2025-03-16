@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
  */
 async function getPostComments(req, res) {
   try {
-    const { postId } = req.body;
+    const { postId } = req.params;  // Changed from req.body to req.params
 
     const comments = await prisma.comment.findMany({
       where: {

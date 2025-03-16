@@ -7,9 +7,9 @@ const upload = multer(multerConfig);
 const routerImageBiome = Router();
 
 routerImageBiome.post("/createImage", upload.single('file'),imageBiomeController.createImage);
-routerImageBiome.post("/list", imageBiomeController.listImages);
-routerImageBiome.post("/get", imageBiomeController.getImage);
-routerImageBiome.post("/update",upload.single('file'), imageBiomeController.updateImage);
-routerImageBiome.post("/delete", imageBiomeController.deleteImage);
+routerImageBiome.post("/imageslist", imageBiomeController.listImages);
+routerImageBiome.get("/image/:id", imageBiomeController.getImage);
+routerImageBiome.post("/imageupdate",upload.single('file'), imageBiomeController.updateImage);
+routerImageBiome.post("/imagedelete", imageBiomeController.deleteImage);
 
 export default routerImageBiome;

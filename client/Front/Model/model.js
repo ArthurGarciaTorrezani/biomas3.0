@@ -1,169 +1,112 @@
-// Função para carregar os posts
-async function loadPosts() {
-  try {
-    // Comentar a chamada real da API
-    //const response = await fetch("http://localhost:8080/posts")
-    const biomeId = "c9a0a26f-32dd-43e4-8d13-e3c4d6cf2ecb"; // ID do bioma Amazônia
-    const response = await fetch(`http://localhost:8080/biome/${biomeId}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    
-    const biome = await response.json()
- 
-    // Usar dados de teste
-   
-    const postsContainer = document.getElementById("posts-container")
-    postsContainer.innerHTML = "" // Limpa o container
+document.addEventListener("DOMContentLoaded", async () => {
+  const biomeId = "ID_DO_BIOMA_AQUI"; // Substitua pelo ID real do bioma
+  const biomeContainer = document.querySelector(".biome-info");
+  const postsContainer = document.getElementById("posts-container");
 
-    biome.posts.forEach((post) => {
-      postsContainer.innerHTML += createPostHTML(post)
-    })
-  } catch (error) {
-    console.error("Erro ao carregar posts:", error)
+  // Função para buscar dados da API
+  async function fetchBiomeData() {
+      try {
+          const response = await fetch(`/localhost:8080/biome/${biomeId}`);
+          const biome = await response.json();
 
-    const postsContainer = document.getElementById("posts-container")
-    postsContainer.innerHTML = "" // Limpa o container
+          // Preenche a seção de informações do bioma
+          biomeContainer.querySelector(".description").innerHTML += `<p>${biome.introduction}</p>`;
+          biomeContainer.querySelector(".location").innerHTML += `<p>${biome.generalCharacteristics}</p>`;
+          biomeContainer.querySelector(".climate").innerHTML += `<p>${biome.naturalResources}</p>`;
+          biomeContainer.querySelector(".fauna").innerHTML += `<p>${biome.environmentalProblems}</p>`;
+          biomeContainer.querySelector(".flora").innerHTML += `<p>${biome.conservation}</p>`;
 
-
+          // Carregar posts
+          fetchPosts(biome.posts);
+      } catch (error) {
+          console.error("Erro ao buscar dados do bioma:", error);
+      }
   }
-}
 
-function updateSession(){
+  // Função para exibir posts e comentários
+  function fetchPosts(posts) {
+      postsContainer.innerHTML = "";
+      posts.forEach(post => {
+          const postElement = document.createElement("div");
+          postElement.classList.add("post");
+          postElement.innerHTML = `
+              <h3>${post.title}</h3>
+              <p>${post.content}</p>
+              <small>Por ${post.author.name} - ${new Date(post.createdAt).toLocaleDateString()}</small>
 
-}
+              <div class="comments-container">
+                  ${renderComments(post.comments)}
+              </div>
 
-// Função para criar HTML do post
-function createPostHTML(post) {
-  return `
-        <div class="post" data-post-id="${post.id}">
-            <div class="post-header">
-                <div class="post-info">
-                    <h3 class="author">${post.author.name}</h3>
-                    <span class="post-date">${formatDate(post.createdAt)}</span>
-                </div>
-            </div>
-            
-            <div class="post-content">
-                <h4>${post.title}</h4>
-                <p>${post.content}</p>
-            </div>
-            
-            <div class="comments-section">
-                <h5>Comentários (${post.comments.length})</h5>
-                ${createCommentsHTML(post.comments)}
-            </div>
-            
-            <div class="add-comment">
-                <textarea placeholder="Adicione um comentário..."></textarea>
-                <button onclick="addComment('${post.id}', null)">Comentar</button>
-            </div>
-        </div>
-    `
-}
-
-// Função para criar HTML dos comentários
-function createCommentsHTML(comments) {
-  // Filtra comentários principais (sem parentCommentId)
-  const mainComments = comments.filter((comment) => !comment.parentCommentId)
-
-  return mainComments
-    .map(
-      (comment) => `
-        <div class="comment" data-comment-id="${comment.id}">
-            <div class="comment-header">
-                <div class="comment-info">
-                    <h6 class="comment-author">${comment.author.name}</h6>
-                    <span class="comment-date">${formatDate(comment.createdAt)}</span>
-                </div>
-            </div>
-            <div class="comment-content">
-                <p>${comment.content}</p>
-            </div>
-            <div class="comment-replies">
-                ${createRepliesHTML(comment.replies || [])}
-            </div>
-            <div class="add-comment">
-                <textarea placeholder="Responder a este comentário..."></textarea>
-                <button onclick="addComment('${comment.postId}', '${comment.id}')">Responder</button>
-            </div>
-        </div>
-    `,
-    )
-    .join("")
-}
-
-// Função para criar HTML das respostas
-function createRepliesHTML(replies) {
-  return replies
-    .map(
-      (reply) => `
-        <div class="comment reply" data-comment-id="${reply.id}">
-            <div class="comment-header">
-                <div class="comment-info">
-                    <h6 class="comment-author">${reply.author.name}</h6>
-                    <span class="comment-date">${formatDate(reply.createdAt)}</span>
-                </div>
-            </div>
-            <div class="comment-content">
-                <p>${reply.content}</p>
-            </div>
-            <div class="add-comment">
-                <textarea placeholder="Responder a este comentário..."></textarea>
-                <button onclick="addComment('${reply.postId}', '${reply.id}')">Responder</button>
-            </div>
-        </div>
-    `,
-    )
-    .join("")
-}
-
-// Funções de interação
-async function addComment(postId, parentId = null) {
-  const container = parentId
-    ? document.querySelector(`[data-comment-id="${parentId}"] .add-comment`)
-    : document.querySelector(`[data-post-id="${postId}"] .add-comment`)
-
-  const content = container.querySelector("textarea").value.trim()
-  if (!content) return
-
-  try {
-    const response = await fetch("/api/comments", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content,
-        postId,
-        parentCommentId: parentId,
-      }),
-    })
-
-    if (response.ok) {
-      loadPosts() // Recarrega todos os posts
-      container.querySelector("textarea").value = ""
-    }
-  } catch (error) {
-    console.error("Erro ao adicionar comentário:", error)
-    // Simular adição de comentário para demonstração
-    alert("Comentário adicionado com sucesso (simulação)")
-    container.querySelector("textarea").value = ""
-    loadPosts()
+              <div class="reply-box">
+                  <textarea class="reply-input" placeholder="Responda este post..." rows="1"></textarea>
+                  <button class="reply-button" onclick="replyToPost('${post.id}', this)">Responder</button>
+              </div>
+          `;
+          postsContainer.appendChild(postElement);
+      });
   }
-}
 
-// Funções auxiliares
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString("pt-BR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })
-}
+  // Função para renderizar comentários aninhados
+  function renderComments(comments, level = 0) {
+      if (!comments.length) return "";
+      return comments.map(comment => `
+          <div class="comment" style="margin-left: ${level * 20}px;">
+              <p><strong>${comment.author.name}</strong>: ${comment.content}</p>
+              <small>${new Date(comment.createdAt).toLocaleDateString()}</small>
 
-// Inicialização
-document.addEventListener("DOMContentLoaded", loadPosts)
+              <div class="reply-box">
+                  <textarea class="reply-input" placeholder="Responder este comentário..." rows="1"></textarea>
+                  <button class="reply-button" onclick="replyToComment('${comment.id}', this)">Responder</button>
+              </div>
 
+              <div class="nested-comments">
+                  ${renderComments(comment.replies, level + 1)}
+              </div>
+          </div>
+      `).join("");
+  }
+
+  // Função para responder a um post
+  async function replyToPost(postId, button) {
+      const content = button.previousElementSibling.value.trim();
+      if (!content) return;
+
+      try {
+          const response = await fetch(`/localhost:8080/commentcreate/${postId}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ content })
+          });
+
+          if (response.ok) {
+              location.reload(); // Recarrega a página para atualizar os comentários
+          }
+      } catch (error) {
+          console.error("Erro ao responder ao post:", error);
+      }
+  }
+
+  // Função para responder a um comentário
+  async function replyToComment(commentId, button) {
+      const content = button.previousElementSibling.value.trim();
+      if (!content) return;
+
+      try {
+          const response = await fetch(`/localhost:8080/commentcreate/`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ content })
+          });
+
+          if (response.ok) {
+              location.reload();
+          }
+      } catch (error) {
+          console.error("Erro ao responder ao comentário:", error);
+      }
+  }
+
+  // Carregar dados ao iniciar a página
+  fetchBiomeData();
+});

@@ -19,7 +19,7 @@ userRoutes.post("/usercreate", userController.userCreate);
 userRoutes.put("/userupdate/", userController.updateUser);
 
 // SET PROFILE IMAGE
-userRoutes.put("/userimage/", upload.single('file'), userController.setImgProfile);
+userRoutes.put("/userimage/:id", upload.single('file'), userController.setImgProfile);
 
 // DELETE USER
 userRoutes.delete("/user/", userController.userDelete);
